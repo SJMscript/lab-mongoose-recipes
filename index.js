@@ -32,10 +32,31 @@ mongoose
     console.log("Recipe Title", recipeAdded.title)
   })
   .then(()=>{
-    return Recipe.insertMany({
-      
+    return Recipe.insertMany(data)
+  })
+  .then((allRecipes) =>{
+    allRecipes.forEach((eachTitle)=>{
+      eachTitle = eachTitle.title
+      console.log(eachTitle) 
     })
+  })
+  .then(()=>{
+    return Recipe.findOneAndUpdate({title: "Rigatoni alla Genovese"}, {duration: 100})
+  })
+  .then(()=>{
+    console.log("Hemos cambiado la duración")
+
+    return Recipe.findOneAndDelete({title: "Carrot Cake"})
+  })
+  .then(()=>{
+    console.log("Carrot Cake ha sido pulverizada")
+
+    return mongoose.connection.close()
+  })
+  .then(()=>{
+    console.log("A casa perrito!!! DATABASE CLOSED")
   })
   .catch(error => {
     console.error('Error connecting to the database', error);
   });
+
